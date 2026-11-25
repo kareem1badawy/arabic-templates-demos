@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>طقم الردود العربية الجاهزة — خرائط جوجل وواتساب بيزنس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --surface:#ffffff; --surface2:#efece5; --ink:#1c2321; --muted:#5d6a65;
+  --line:#e2ded2; --teal:#0e6b5c; --teal-d:#0a4f43; --teal-soft:#e3f0ec;
+  --wa:#1faa55; --wa-soft:#e4f6ec; --gold:#d9930d; --gold-soft:#fdf0d5;
+  --red:#c0392b; --red-soft:#fbeae8; --radius:14px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#121614; --surface:#1b201e; --surface2:#232926; --ink:#eef2f0; --muted:#a7b3ae;
+    --line:#2e3633; --teal:#3ec6ab; --teal-d:#7adcc6; --teal-soft:#173029;
+    --wa:#3ecf74; --wa-soft:#17301f; --gold:#f0b64a; --gold-soft:#33270e;
+    --red:#f08a7d; --red-soft:#3a1e1a;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;line-height:1.75;font-size:16px}
+h1,h2,h3{font-family:"Tajawal","IBM Plex Sans Arabic",sans-serif;line-height:1.35;margin:0}
+button,input,select{font:inherit}
+button,[role="button"]{min-height:44px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px 64px}
+
+/* ---------- Hero ---------- */
+.hero{padding:38px 0 8px}
+.hero-top{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between}
+.hero h1{font-size:clamp(28px,5vw,44px);font-weight:900;max-width:640px}
+.hero h1 em{font-style:normal;color:var(--teal)}
+.hero p.lead{color:var(--muted);font-size:17px;max-width:560px;margin:10px 0 0}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 18px;text-align:center;min-width:104px}
+.stat b{display:block;font-family:"Tajawal";font-size:24px;color:var(--teal);line-height:1.2}
+.stat span{font-size:13px;color:var(--muted)}
+
+/* ---------- Customise bar ---------- */
+.customise{margin-top:26px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.customise h2{font-size:18px;margin-bottom:4px}
+.customise p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:5px}
+.field input{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);min-height:46px}
+.field input:focus{outline:2px solid var(--teal);border-color:transparent}
+
+/* ---------- Controls ---------- */
+.controls{position:sticky;top:0;z-index:20;background:var(--bg);padding:16px 0 10px;margin-top:10px}
+.search-row{display:flex;gap:10px;flex-wrap:wrap}
+.search-box{flex:1;min-width:220px;position:relative}
+.search-box input{width:100%;padding:11px 42px 11px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);min-height:48px}
+.search-box input:focus{outline:2px solid var(--teal);border-color:transparent}
+.search-box svg{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.seg{display:inline-flex;background:var(--surface2);border-radius:12px;padding:4px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--muted);padding:8px 16px;border-radius:9px;cursor:pointer;font-weight:600;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.14)}
+.filters-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.filters-row .lbl{font-size:13px;font-weight:700;color:var(--muted)}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 15px;cursor:pointer;font-size:13.5px;font-weight:600;min-height:38px}
+.chip[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+@media (prefers-color-scheme: dark){.chip[aria-pressed="true"]{color:#0b1512}}
+.result-line{margin:14px 2px 0;font-size:14px;color:var(--muted)}
+.result-line b{color:var(--ink)}
+
+/* ---------- Cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:14px}
+@media (max-width:380px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:10px}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.card h3{font-size:17px;font-weight:800}
+.badge{flex-shrink:0;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:5px}
+.badge.google{background:var(--gold-soft);color:var(--gold)}
+.badge.whatsapp{background:var(--wa-soft);color:var(--wa)}
+.stars{color:var(--gold);font-size:15px;letter-spacing:2px;line-height:1}
+.stars .off{opacity:.28}
+.scenario{font-size:13.5px;color:var(--muted);background:var(--surface2);border-radius:9px;padding:8px 12px}
+.scenario b{color:var(--ink)}
+.reply{font-size:15.5px;background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:13px 14px;flex:1;white-space:pre-line}
+.reply .var{color:var(--teal);font-weight:700}
+.card-foot{display:flex;gap:8px;align-items:center}
+.copy-btn{flex:1;background:var(--teal);color:#fff;border:0;border-radius:10px;padding:11px 14px;cursor:pointer;font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.copy-btn:hover{background:var(--teal-d)}
+@media (prefers-color-scheme: dark){.copy-btn{color:#0b1512}.copy-btn:hover{color:#0b1512}}
+.copy-btn.copied{background:var(--wa)}
+.fav-btn{width:46px;height:46px;flex-shrink:0;border:1.5px solid var(--line);background:var(--surface);border-radius:10px;cursor:pointer;font-size:19px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.fav-btn[aria-pressed="true"]{color:var(--gold);border-color:var(--gold)}
+.dialect-tag{font-size:12px;color:var(--muted)}
+.empty{display:none;text-align:center;padding:52px 20px;color:var(--muted)}
+.empty.show{display:block}
+.empty b{display:block;font-family:"Tajawal";font-size:20px;color:var(--ink);margin-bottom:6px}
+
+/* ---------- Tips ---------- */
+.tips{margin-top:52px}
+.tips h2{font-size:24px;font-weight:800;margin-bottom:6px}
+.tips>p{color:var(--muted);margin:0 0 18px;max-width:640px}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.tip{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.tip h3{font-size:16px;margin-bottom:6px;color:var(--teal)}
+.tip p{margin:0;font-size:14.5px;color:var(--muted)}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:13.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,80px);background:var(--ink);color:var(--bg);padding:12px 22px;border-radius:999px;font-weight:700;font-size:15px;z-index:50;transition:transform .25s ease;box-shadow:0 8px 28px rgba(0,0,0,.25);pointer-events:none}
+.toast.show{transform:translate(-50%,0)}
+@media (prefers-reduced-motion: reduce){.toast{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-top">
+      <div>
+        <h1>طقم الردود العربية الجاهزة <em>لخرائط جوجل وواتساب بيزنس</em></h1>
+        <p class="lead">ردود احترافية مكتوبة بعناية لكل موقف يواجه نشاطك التجاري — اختر اللهجة، عدّل اسم نشاطك مرة واحدة، وانسخ الرد بضغطة واحدة.</p>
+      </div>
+      <div class="stats" aria-label="أرقام الطقم">
+        <div class="stat"><b>84</b><span>ردًا جاهزًا</span></div>
+        <div class="stat"><b>28</b><span>موقفًا مختلفًا</span></div>
+        <div class="stat"><b>3</b><span>لهجات عربية</span></div>
+        <div class="stat"><b>2</b><span>منصتان</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Customise ===== -->
+  <section class="customise" aria-labelledby="cust-h">
+    <h2 id="cust-h">خصّص الردود بنشاطك — مرة واحدة فقط</h2>
+    <p>اكتب بيانات نشاطك الثابتة هنا، وستُدرج تلقائيًا داخل كل رد. أما القيم التي تتغير مع كل طلب أو حجز — مثل رقم الطلب والمبلغ والموعد — فتظهر بين قوسين مثل (اكتب الرقم) لتملأها بنفسك قبل النسخ.</p>
+    <div class="fields">
+      <div class="field">
+        <label for="f-biz">اسم النشاط التجاري</label>
+        <input id="f-biz" type="text" placeholder="مثال: مقهى الديوانية" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="f-city">المدينة / الحي</label>
+        <input id="f-city" type="text" placeholder="مثال: الرياض — حي الياسمين" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="f-phone">رقم التواصل للحلّ والشكاوى</label>
+        <input id="f-phone" type="tel" placeholder="مثال: 05xxxxxxxx" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="f-hours">ساعات العمل</label>
+        <input id="f-hours" type="text" placeholder="مثال: يوميًا من 9 صباحًا حتى 11 مساءً" autocomplete="off">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Controls ===== -->
+  <div class="controls">
+    <div class="search-row">
+      <div class="search-box">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+        <input id="search" type="search" placeholder="ابحث في الردود… مثال: تأخير، سعر، حجز، شكر" aria-label="ابحث في الردود">
+      </div>
+      <div class="seg" role="group" aria-label="اختيار اللهجة">
+        <button type="button" data-dialect="fusha" aria-pressed="true">الفصحى</button>
+        <button type="button" data-dialect="gulf" aria-pressed="false">الخليجية</button>
+        <button type="button" data-dialect="egypt" aria-pressed="false">المصرية</button>
+      </div>
+    </div>
+    <div class="filters-row">
+      <span class="lbl">المنصة:</span>
+      <div class="chips" id="platform-chips">
+        <button type="button" class="chip" data-platform="all" aria-pressed="true">الكل</button>
+        <button type="button" class="chip" data-platform="google" aria-pressed="false">تقييمات خرائط جوجل</button>
+        <button type="button" class="chip" data-platform="whatsapp" aria-pressed="false">واتساب بيزنس</button>
+        <button type="button" class="chip" data-platform="fav" aria-pressed="false">★ المفضلة</button>
+      </div>
+    </div>
+    <div class="filters-row">
+      <span class="lbl">الموقف:</span>
+      <div class="chips" id="cat-chips"></div>
+    </div>
+  </div>
+
+  <p class="result-line" id="result-line" role="status"></p>
+
+  <!-- ===== Cards ===== -->
+  <main>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty">
+      <b>لا توجد ردود مطابقة</b>
+      جرّب كلمة بحث مختلفة، أو أعد ضبط فلاتر المنصة والموقف.
+    </div>
+  </main>
+
+  <!-- ===== Tips ===== -->
+  <section class="tips" aria-labelledby="tips-h">
+    <h2 id="tips-h">قواعد ذهبية قبل أن ترد</h2>
+    <p>الرد الجاهز يوفّر وقتك، لكن هذه القواعد هي ما يحوّل الرد إلى سمعة طيبة ومبيعات.</p>
+    <div class="tips-grid">
+      <div class="tip">
+        <h3>ردّ خلال 24 ساعة</h3>
+        <p>التقييم السلبي الذي يُردّ عليه بسرعة وبأدب يقرأه العملاء الجدد كدليل اهتمام، وكثير من أصحاب التقييمات يعدّلون نجومهم بعد حلّ المشكلة.</p>
+      </div>
+      <div class="tip">
+        <h3>لا تجادل علنًا أبدًا</h3>
+        <p>اعترف، اعتذر باختصار، ثم انقل الحوار إلى الهاتف أو الواتساب. الجدال أمام الجمهور يخسرك عملاء لم يشتكوا أصلًا.</p>
+      </div>
+      <div class="tip">
+        <h3>خصّص أول سطر</h3>
+        <p>اذكر اسم العميل أو تفصيلة من كلامه في أول سطر قبل لصق الرد — الردود المنسوخة حرفيًا من دون لمسة شخصية يلاحظها القرّاء فورًا.</p>
+      </div>
+      <div class="tip">
+        <h3>اطلب التقييم بلطف</h3>
+        <p>أفضل وقت لطلب تقييم جوجل هو لحظة رضا العميل بعد إتمام الخدمة. استخدم رد «طلب تقييم» في قسم واتساب وأرسله مع رابط تقييم نشاطك.</p>
+      </div>
+      <div class="tip">
+        <h3>طابق لهجة عميلك</h3>
+        <p>عميل كتب بالخليجية؟ ردّ بالخليجية. عميل مصري؟ ردّ بالمصرية. مطابقة اللهجة تبني قربًا فوريًا وتجعل الرد يبدو مكتوبًا له وحده.</p>
+      </div>
+      <div class="tip">
+        <h3>راجع قبل الإرسال</h3>
+        <p>تأكد أن اسم النشاط والرقم وساعات العمل في أعلى الصفحة صحيحة — فهي تُدرج تلقائيًا في كل رد. واملأ القيم بين القوسين الخاصة بكل طلب (الرقم، المبلغ، الموعد) قبل الإرسال.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>طقم الردود العربية الجاهزة — خرائط جوجل وواتساب بيزنس · الفصحى والخليجية والمصرية</span>
+    <span>84 ردًا · نسخ بضغطة واحدة · يعمل دون اتصال بعد التحميل</span>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">تم النسخ بنجاح ✓</div>
+
+<script>
+"use strict";
+
+/* ============ DATA: 24 scenarios x 3 dialects ============ */
+/* Tokens: {biz} {city} {phone} {hours} — replaced from the customise fields. */
+var REPLIES = [
+/* ---------- Google Maps reviews ---------- */
+{ id:"g5", platform:"google", cat:"تقييمات إيجابية", title:"تقييم 5 نجوم — شكر عام", stars:5,
+  scenario:"عميل منحك 5 نجوم وكتب مدحًا عامًا للتجربة.",
+  fusha:"شكرًا جزيلًا لك على تقييمك الرائع وكلماتك الطيبة. سعادتنا الحقيقية في {biz} هي رضا عملائنا، ونعدك بأن نحافظ على هذا المستوى دائمًا. نتطلع إلى خدمتك مرة أخرى قريبًا.",
+  gulf:"الله يعطيك العافية، وما قصّرت على هالتقييم الطيّب. تشريفك لنا في {biz} يسعدنا، ورضاك هو هدفنا الأول. حيّاك الله في أي وقت، ونورتنا.",
+  egypt:"تسلم يا فندم على التقييم الجميل وكلامك الحلو. رضاك عندنا بالدنيا، وإن شاء الله دايمًا نكون عند حسن ظنك في {biz}. نورّتنا ومنتظرينك تاني قريب." },
+
+{ id:"g5food", platform:"google", cat:"تقييمات إيجابية", title:"تقييم 5 نجوم — مدح جودة المنتج", stars:5,
+  scenario:"عميل مدح جودة الأكل أو المنتج تحديدًا.",
+  fusha:"سعداء جدًا بأن الجودة نالت إعجابك، فهي أولوية لا نساوم عليها في {biz}. شكرًا لثقتك، وسنواصل تقديم الأفضل لك في كل زيارة.",
+  gulf:"كلامك وسام على صدورنا. الجودة عندنا في {biz} خط أحمر، وحرصنا دايمًا إنك تطلع راضي. الله يديمك من عملائنا الكرام، وحيّاك الله.",
+  egypt:"كلامك ده شهادة نعتز بيها. إحنا في {biz} بنهتم بكل تفصيلة عشان توصلك أحسن جودة، وفرحتنا لما ده يوصلك. تسلم ومنتظرينك دايمًا." },
+
+{ id:"g5staff", platform:"google", cat:"تقييمات إيجابية", title:"تقييم 5 نجوم — مدح تعامل الموظفين", stars:5,
+  scenario:"عميل أشاد بحسن تعامل الفريق أو موظف بعينه.",
+  fusha:"شكرًا لك على تقديرك لفريقنا؛ سننقل كلماتك إليهم فهي خير دافع لهم. في {biz} نؤمن أن حسن التعامل نصف التجربة، ويسعدنا أننا كنا عند حسن ظنك.",
+  gulf:"بيّض الله وجهك، وبنوصّل شكرك للفريق كله — بيفرحون فيه أكيد. خدمتك شرف لنا في {biz}، وحيّاك الله أنت ومن يعز عليك.",
+  egypt:"ربنا يخليك، هنبلّغ الفريق كله بكلامك وهيفرحوا جدًا. حسن المعاملة عندنا في {biz} مش شعار، ده طبعنا. تسلم يا فندم ونورّتنا." },
+
+{ id:"g4", platform:"google", cat:"تقييمات إيجابية", title:"تقييم 4 نجوم — رضا مع ملاحظة بسيطة", stars:4,
+  scenario:"عميل راضٍ عمومًا لكنه ذكر ملاحظة صغيرة (انتظار، ازدحام…).",
+  fusha:"شكرًا لك على تقييمك وعلى ملاحظتك الصادقة؛ فهي تساعدنا على التحسين. نعمل في {biz} على معالجة ما ذكرت، ونأمل أن تكون زيارتك القادمة بتجربة كاملة تستحق النجوم الخمس.",
+  gulf:"مشكور على التقييم وعلى صراحتك، وملاحظتك وصلت وبنشتغل عليها. هدفنا في {biz} إن زيارتك الجاية تكون خمس نجوم كاملة بإذن الله. حيّاك الله.",
+  egypt:"شكرًا على تقييمك وعلى إنك قلت لنا الملاحظة بصراحة، كده بتساعدنا نتحسّن. هنشتغل عليها في {biz}، وإن شاء الله زيارتك الجاية تبقى خمس نجوم على طول." },
+
+{ id:"g3", platform:"google", cat:"تقييمات محايدة", title:"تقييم 3 نجوم — تجربة متوسطة", stars:3,
+  scenario:"عميل وصف التجربة بأنها «عادية» أو متوسطة دون تفاصيل حادة.",
+  fusha:"شكرًا لك على وقتك وتقييمك. يؤسفنا أن تجربتك في {biz} لم تكن بالمستوى الذي نطمح إليه ونعد به عملاءنا. نود معرفة التفاصيل لنحسّن؛ يسعدنا تواصلك معنا على {phone}، ونأمل أن تمنحنا فرصة ثانية.",
+  gulf:"مشكور على تقييمك، وزعلنا إن تجربتك عندنا كانت عادية — إحنا نطمح للأفضل دايمًا. ودّنا نسمع منك أكثر على {phone} عشان نعوّضك ونحسّن. حيّاك الله مرة ثانية في {biz}.",
+  egypt:"شكرًا على تقييمك ووقتك. يهمنا نعرف إيه اللي خلّى التجربة عادية عندنا في {biz}، عشان نصلّحه. كلّمنا على {phone} وهنسمعك للآخر، وإن شاء الله الزيارة الجاية تعوّضك." },
+
+{ id:"g2", platform:"google", cat:"تقييمات سلبية", title:"تقييم نجمتين — تجربة مخيبة", stars:2,
+  scenario:"عميل غير راضٍ وذكر قصورًا واضحًا في الخدمة أو المنتج.",
+  fusha:"نعتذر منك بصدق؛ ما حدث لا يمثّل مستوى {biz} الذي نلتزم به. لقد راجعنا ملاحظتك مع الفريق واتخذنا إجراءً حتى لا تتكرر. نرجو أن تتواصل معنا على {phone} لنعوّضك بما يليق بك.",
+  gulf:"حقك علينا، ونعتذر لك من القلب. اللي صار ما هو مستوانا في {biz}، وراجعنا الموضوع مع الفريق عشان ما يتكرر. كلّمنا على {phone} وخلّنا نعوّضك، رضاك يهمنا.",
+  egypt:"حقك علينا وبنعتذر لك جدًا. اللي حصل مش مستوى {biz} ولا اللي بنقدّمه لعملائنا. راجعنا الموضوع مع الفريق، وكلّمنا على {phone} عشان نعوّضك ونرضيك." },
+
+{ id:"g1", platform:"google", cat:"تقييمات سلبية", title:"تقييم نجمة واحدة — عميل غاضب", stars:1,
+  scenario:"عميل غاضب كتب شكوى حادة. الرد: اعتذار هادئ ونقل الحوار لخاص.",
+  fusha:"نتفهم غضبك ونعتذر بشدة عن هذه التجربة؛ فهي أبعد ما تكون عن قيمنا في {biz}. لا نريد أن تنتهي علاقتنا بك عند هذا الحد. فضلًا تواصل معنا مباشرة على {phone} وسنتولى الأمر شخصيًا حتى يصلك حقك كاملًا.",
+  gulf:"نقدّر زعلك ونعتذر لك بشدة — حقك علينا وما نرضى لك بهالتجربة أبدًا. الموضوع عند الإدارة في {biz} الحين. كلّمنا على {phone} وبنتفاهم ونرضيك بإذن الله، هذا وعد.",
+  egypt:"إحنا مقدّرين زعلك وبنعتذر لك من قلبنا، وحقك علينا. اللي حصل لا يرضينا ولا يليق بعملاء {biz}. كلّمنا على {phone} والإدارة بنفسها هتتابع معاك لحد ما حقك يوصلك كامل." },
+
+{ id:"g1nostar", platform:"google", cat:"تقييمات سلبية", title:"تقييم سلبي دون تعليق", stars:1,
+  scenario:"عميل وضع نجمة أو نجمتين دون أن يكتب أي نص.",
+  fusha:"شكرًا لك على التقييم، ويؤسفنا أن تجربتك في {biz} لم تكن مرضية. ملاحظتك — حتى دون تفاصيل — مهمة لنا. إن رغبت بمشاركتنا ما حدث على {phone} فسنكون ممتنين، وسنعمل على التحسين فورًا.",
+  gulf:"مشكور على التقييم، وزعلنا إنك طلعت غير راضي من {biz}. ودّنا نعرف وش اللي ضايقك عشان نصلّحه. كلّمنا على {phone} وكلامك بيفرق معنا وبيغيّر للأفضل.",
+  egypt:"شكرًا على تقييمك، ويهمنا نعرف إيه اللي ما عجبكش في {biz} عشان نصلّحه. لو كلّمتنا على {phone} وحكيت لنا، هنكون شاكرين جدًا وهنشتغل على الملاحظة فورًا." },
+
+{ id:"gprice", platform:"google", cat:"شكاوى محددة", title:"شكوى من الأسعار", stars:2,
+  scenario:"عميل يرى أن الأسعار مرتفعة مقارنة بالقيمة أو بالمنافسين.",
+  fusha:"شكرًا لصراحتك؛ ملاحظتك حول الأسعار محل تقدير ودراسة لدينا. نحرص في {biz} على جودة المكونات والخدمة، ونعمل باستمرار على عروض وقيمة أفضل لعملائنا. نأمل أن تجرّبنا مجددًا وتلمس الفرق.",
+  gulf:"وصلتنا ملاحظتك عن الأسعار ومشكور على صراحتك. إحنا في {biz} نحرص على جودة تستاهل قيمتها، وعندنا عروض دورية تخفف عليك. تابعنا وحيّاك الله، وبإذن الله تلقى ما يرضيك.",
+  egypt:"رأيك وصل ويهمنا. إحنا في {biz} بنحاول نوازن بين الجودة والسعر، وعندنا عروض وباقات بتتجدّد على طول. جرّبنا مرة تانية وإن شاء الله هتلاقي قيمة تستاهل كل جنيه." },
+
+{ id:"glate", platform:"google", cat:"شكاوى محددة", title:"شكوى من التأخير أو بطء الخدمة", stars:2,
+  scenario:"عميل اشتكى من انتظار طويل أو تأخر طلبه.",
+  fusha:"نعتذر عن التأخير الذي واجهته؛ وقتك ثمين ونحترمه. راجعنا في {biz} أسباب الازدحام في ذلك الوقت وعزّزنا الفريق في أوقات الذروة. شكرًا لتنبيهك، ونعدك بتجربة أسرع في زيارتك القادمة.",
+  gulf:"نعتذر عن التأخير، ووقتك غالي علينا. راجعنا الموضوع في {biz} وزوّدنا الفريق بأوقات الزحمة عشان ما يتكرر. مشكور على تنبيهك، وحيّاك الله — الجاية أسرع بإذن الله.",
+  egypt:"بنعتذر جدًا عن التأخير، وقتك مهم عندنا. راجعنا سبب الزحمة في {biz} وزوّدنا الفريق في أوقات الضغط. شكرًا إنك نبّهتنا، وإن شاء الله زيارتك الجاية تبقى سريعة ومريحة." },
+
+{ id:"gstaff", platform:"google", cat:"شكاوى محددة", title:"شكوى من تعامل موظف", stars:1,
+  scenario:"عميل اشتكى من أسلوب أو تصرف أحد الموظفين.",
+  fusha:"نعتذر بشدة؛ احترام العميل وحسن التعامل معه مبدأ لا يقبل المساومة في {biz}. تمت مراجعة الواقعة مع الموظف المعني واتخاذ اللازم. شكرًا لأنك أبلغتنا، ونرجو ألا يحملك هذا على مقاطعتنا؛ تواصل معنا على {phone} لنعوّضك.",
+  gulf:"نعتذر لك بشدة، وحسن التعامل عندنا في {biz} أساس ما نتساهل فيه. راجعنا الموضوع مع الموظف واتخذنا اللازم. حقك علينا، وكلّمنا على {phone} وخلّنا نرضيك.",
+  egypt:"بنعتذر لك جدًا؛ احترام العميل وحسن معاملته عندنا في {biz} خط أحمر. راجعنا اللي حصل مع الموظف واتخذنا اللازم. كلّمنا على {phone} عشان نعوّضك ونرضيك." },
+
+{ id:"gclean", platform:"google", cat:"شكاوى محددة", title:"شكوى من النظافة أو المكان", stars:2,
+  scenario:"عميل علّق على نظافة المكان أو الترتيب أو الأجواء.",
+  fusha:"شكرًا لتنبيهك الصريح، ونعتذر عن أي قصور لاحظته. النظافة في {biz} تخضع لجدول متابعة يومي، وقد شدّدنا الرقابة فور قراءة ملاحظتك. نقدّر حرصك، فهو يساعدنا على خدمة الجميع بشكل أفضل.",
+  gulf:"مشكور على التنبيه ونعتذر عن أي قصور شفته. النظافة عندنا في {biz} متابعة يومية، وبعد ملاحظتك شدّدنا عليها أكثر. تنبيهك يخدمنا ويخدم عملاءنا، وحيّاك الله.",
+  egypt:"شكرًا على تنبيهك وبنعتذر عن أي تقصير لاحظته. النظافة عندنا في {biz} ليها متابعة يومية، وبعد كلامك شدّدنا الرقابة أكتر. ملاحظتك مهمة وبتساعدنا نقدّم الأفضل للكل." },
+
+/* ---------- WhatsApp Business ---------- */
+{ id:"wwelcome", platform:"whatsapp", cat:"ترحيب واستقبال", title:"رسالة ترحيب بعميل جديد", stars:0,
+  scenario:"أول رسالة تصل عميلًا يتواصل معك لأول مرة.",
+  fusha:"أهلًا وسهلًا بك في {biz} 🌿\nسعداء بتواصلك معنا. كيف يمكننا خدمتك اليوم؟ يسعدنا إرسال قائمة خدماتنا وأسعارنا، أو الإجابة عن أي استفسار لديك.",
+  gulf:"حيّاك الله في {biz} 🌿\nنورّتنا بتواصلك. وش نقدر نخدمك فيه اليوم؟ تبغى الأسعار، أو عندك استفسار معيّن؟ إحنا تحت أمرك.",
+  egypt:"أهلًا وسهلًا بيك في {biz} 🌿\nنورّتنا والله. نقدر نخدمك في إيه النهاردة؟ لو حابب نبعت لك الأسعار أو عندك أي استفسار، إحنا تحت أمرك." },
+
+{ id:"wprice", platform:"whatsapp", cat:"ترحيب واستقبال", title:"الرد على استفسار عن السعر", stars:0,
+  scenario:"عميل يسأل: «بكم؟» أو يطلب قائمة الأسعار.",
+  fusha:"أهلًا بك، وشكرًا لاهتمامك.\nسعر الخدمة يبدأ من (اكتب السعر)، ويختلف بحسب التفاصيل التي تحتاجها. أخبرنا بما تبحث عنه بالضبط وسنرسل لك عرضًا واضحًا بالسعر النهائي دون أي التزام.",
+  gulf:"حيّاك الله، ومشكور على سؤالك.\nالسعر يبدأ من (اكتب السعر) ويختلف حسب الطلب. علّمنا وش تحتاج بالضبط ونرسل لك السعر النهائي واضح، بدون أي التزام منك.",
+  egypt:"أهلًا بيك، شكرًا لاهتمامك.\nالسعر بيبدأ من (اكتب السعر) وبيختلف حسب التفاصيل. قل لنا محتاج إيه بالظبط وهنبعت لك السعر النهائي واضح، من غير أي التزام عليك." },
+
+{ id:"wstock", platform:"whatsapp", cat:"ترحيب واستقبال", title:"الرد على «هل المنتج متوفر؟»", stars:0,
+  scenario:"عميل يسأل عن توفر منتج أو خدمة بعينها.",
+  fusha:"أهلًا بك. نعم، المنتج متوفر لدينا حاليًا في {biz}.\nهل ترغب أن نحجزه باسمك؟ الكمية محدودة، والحجز يضمن لك توفره عند حضورك أو توصيله إليك.",
+  gulf:"حيّاك الله. إي نعم، متوفر عندنا الحين في {biz}.\nتبغى نحجزه باسمك؟ الكمية محدودة، والحجز يضمن إنه يوصلك أو تلقاه جاهز عند جيّتك.",
+  egypt:"أهلًا بيك. أيوه، المنتج متوفر عندنا دلوقتي في {biz}.\nتحب نحجزه باسمك؟ الكمية محدودة، والحجز بيضمن لك إنه يبقى جاهز لك وقت ما تيجي أو يوصلك." },
+
+{ id:"worder", platform:"whatsapp", cat:"طلبات وتوصيل", title:"تأكيد استلام الطلب", stars:0,
+  scenario:"رسالة ترسلها فور استلام طلب العميل.",
+  fusha:"تم استلام طلبك بنجاح ✅\nرقم الطلب: (اكتب الرقم)\nالإجمالي: (اكتب المبلغ)\nسنبدأ بتجهيزه الآن، وسنعلمك فور خروجه للتوصيل أو جاهزيته للاستلام من {biz}. شكرًا لثقتك بنا.",
+  gulf:"تم استلام طلبك بنجاح ✅\nرقم الطلب: (اكتب الرقم)\nالمجموع: (اكتب المبلغ)\nبنجهّزه لك الحين، ونعلمك أول ما يطلع للتوصيل أو يجهز للاستلام من {biz}. مشكور على ثقتك.",
+  egypt:"طلبك وصل وتم تأكيده ✅\nرقم الطلب: (اكتب الرقم)\nالإجمالي: (اكتب المبلغ)\nهنبدأ نجهّزه دلوقتي، وهنبلّغك أول ما يطلع للتوصيل أو يجهز للاستلام من {biz}. شكرًا لثقتك فينا." },
+
+{ id:"wdelivery", platform:"whatsapp", cat:"طلبات وتوصيل", title:"معلومات التوصيل والمدة", stars:0,
+  scenario:"عميل يسأل عن رسوم التوصيل ومدته.",
+  fusha:"نوصل داخل {city} برسوم (اكتب الرسوم)، والتوصيل مجاني للطلبات فوق (اكتب الحد).\nالمدة المعتادة من (اكتب المدة). أرسل لنا موقعك وسنؤكد لك الوقت الدقيق قبل إتمام الطلب.",
+  gulf:"نوصّل داخل {city} برسوم (اكتب الرسوم)، والتوصيل مجاني للطلبات فوق (اكتب الحد).\nالمدة عادة (اكتب المدة). أرسل موقعك ونأكد لك الوقت بالضبط قبل ما نكمل الطلب.",
+  egypt:"بنوصّل داخل {city} برسوم (اكتب الرسوم)، والتوصيل مجاني للطلبات اللي فوق (اكتب الحد).\nالمدة غالبًا (اكتب المدة). ابعت لنا موقعك وهنأكد لك الوقت بالظبط قبل ما نكمل الطلب." },
+
+{ id:"wshipped", platform:"whatsapp", cat:"طلبات وتوصيل", title:"إشعار خروج الطلب للتوصيل", stars:0,
+  scenario:"رسالة عند تسليم الطلب لمندوب التوصيل.",
+  fusha:"طلبك في الطريق إليك الآن 🚚\nالمندوب سيتواصل معك عند الوصول. إن احتجت أي تعديل أو تأخر عليك الطلب أكثر من المتوقع، راسلنا هنا مباشرة وسنتابع معك لحظة بلحظة.",
+  gulf:"طلبك طلع للتوصيل الحين 🚚\nالمندوب بيكلّمك عند الوصول. وإذا تأخر عليك أو احتجت أي شيء، راسلنا هنا ونتابع معك أول بأول.",
+  egypt:"طلبك خرج للتوصيل دلوقتي 🚚\nالمندوب هيتواصل معاك عند الوصول. ولو الطلب اتأخر أو احتجت أي حاجة، كلّمنا هنا وهنطّمن عليك أول بأول." },
+
+{ id:"wbook", platform:"whatsapp", cat:"حجوزات ومواعيد", title:"تأكيد حجز موعد", stars:0,
+  scenario:"تأكيد موعد حجز خدمة أو طاولة أو استشارة.",
+  fusha:"تم تأكيد حجزك في {biz} ✅\nالموعد: (اكتب اليوم والتاريخ) الساعة (اكتب الوقت)\nالعنوان: {city}\nإن احتجت تعديل الموعد أو إلغاءه، أخبرنا قبلها بساعتين على الأقل. بانتظارك.",
+  gulf:"تم تأكيد حجزك في {biz} ✅\nالموعد: (اكتب اليوم والتاريخ) الساعة (اكتب الوقت)\nالموقع: {city}\nإذا بغيت تعدّل أو تلغي، علّمنا قبل الموعد بساعتين على الأقل. بانتظارك وحيّاك الله.",
+  egypt:"حجزك اتأكد في {biz} ✅\nالمعاد: (اكتب اليوم والتاريخ) الساعة (اكتب الوقت)\nالعنوان: {city}\nلو احتجت تعدّل أو تلغي، بلّغنا قبل المعاد بساعتين على الأقل. منتظرينك." },
+
+{ id:"wremind", platform:"whatsapp", cat:"حجوزات ومواعيد", title:"تذكير بموعد الغد", stars:0,
+  scenario:"رسالة تذكير لطيفة قبل الموعد بيوم أو بساعات.",
+  fusha:"تذكير ودي من {biz} 🌿\nموعدك معنا غدًا (اكتب اليوم) الساعة (اكتب الوقت).\nهل ما زال الموعد مناسبًا لك؟ رد علينا بـ«مؤكد» لتثبيته، أو أخبرنا إن رغبت بتغييره.",
+  gulf:"تذكير بسيط من {biz} 🌿\nموعدك بكرة (اكتب اليوم) الساعة (اكتب الوقت).\nالموعد مناسب لك؟ رد بـ«مؤكد» ونثبّته لك، أو علّمنا إذا تبغى تغيّره.",
+  egypt:"تذكير بسيط من {biz} 🌿\nمعادك بكرة (اكتب اليوم) الساعة (اكتب الوقت).\nالمعاد لسه مناسب لك؟ رد بـ«مؤكد» ونثبّته لك، أو قل لنا لو حابب تغيّره." },
+
+{ id:"wpay", platform:"whatsapp", cat:"ترحيب واستقبال", title:"طرق الدفع المتاحة", stars:0,
+  scenario:"عميل يسأل: كيف أدفع؟ هل تقبلون الشبكة / التحويل؟",
+  fusha:"نوفر عدة طرق دفع مريحة: نقدًا عند الاستلام، بالبطاقة، أو بالتحويل البنكي.\nأخبرنا بالطريقة التي تناسبك وسنرسل لك التفاصيل فورًا لإتمام طلبك.",
+  gulf:"عندنا أكثر من طريقة دفع تريّحك: كاش عند الاستلام، شبكة، أو تحويل بنكي.\nعلّمنا وش يناسبك ونرسل لك التفاصيل على طول عشان نكمل طلبك.",
+  egypt:"عندنا أكتر من طريقة دفع تريّحك: كاش عند الاستلام، بالكارت، أو تحويل بنكي.\nقل لنا أنهي طريقة تناسبك وهنبعت لك التفاصيل على طول عشان نكمل طلبك." },
+
+{ id:"whours", platform:"whatsapp", cat:"ترحيب واستقبال", title:"ساعات العمل والموقع", stars:0,
+  scenario:"عميل يسأل: متى تفتحون؟ وأين موقعكم؟",
+  fusha:"أهلًا بك. ساعات عملنا في {biz}: {hours}.\nموقعنا: {city} — ويمكنك الوصول إلينا عبر خرائط جوجل بكتابة اسم النشاط. يسعدنا استقبالك في أي وقت خلال ساعات العمل.",
+  gulf:"حيّاك الله. دوامنا في {biz}: {hours}.\nوموقعنا: {city} — اكتب اسمنا في خرائط جوجل ويوصلك لين عندنا. حيّاك في أي وقت خلال الدوام.",
+  egypt:"أهلًا بيك. مواعيدنا في {biz}: {hours}.\nوعنوانا: {city} — اكتب اسمنا في خرائط جوجل هيوصّلك لحد عندنا. نورّتنا في أي وقت خلال المواعيد." },
+
+{ id:"wdelay", platform:"whatsapp", cat:"اعتذار ومتابعة", title:"اعتذار عن تأخر الرد", stars:0,
+  scenario:"تأخرت في الرد على رسالة العميل لساعات.",
+  fusha:"نعتذر عن تأخرنا في الرد عليك؛ كان لدينا ضغط رسائل كبير. رسالتك مهمة لنا، ونحن معك الآن — أخبرنا كيف نخدمك وسنعوّضك عن الانتظار باهتمام مضاعف.",
+  gulf:"نعتذر عن التأخير في الرد — كان عندنا ضغط رسائل. رسالتك مهمة وما ننساها. إحنا معك الحين، علّمنا وش تحتاج ونخدمك على طول.",
+  egypt:"بنعتذر جدًا على التأخير في الرد — كان عندنا ضغط رسائل كبير. رسالتك مهمة عندنا وإحنا معاك دلوقتي. قل لنا محتاج إيه وهنخدمك على طول." },
+
+{ id:"wout", platform:"whatsapp", cat:"اعتذار ومتابعة", title:"اعتذار عن نفاد منتج + بديل", stars:0,
+  scenario:"المنتج المطلوب غير متوفر حاليًا.",
+  fusha:"يؤسفنا إخبارك أن المنتج الذي طلبته نفد حاليًا من {biz}، وسيتوفر مجددًا خلال (اكتب المدة) بإذن الله.\nهل ترغب أن نعلمك فور وصوله؟ أو نقترح عليك بديلًا قريبًا منه يلقى إعجاب عملائنا؟",
+  gulf:"للأسف المنتج اللي طلبته خلص عندنا الحين في {biz}، وبيتوفر خلال (اكتب المدة) بإذن الله.\nتبغى نعلمك أول ما يوصل؟ أو نقترح لك بديل قريب منه وعليه طلب؟",
+  egypt:"للأسف المنتج اللي طلبته خلص عندنا دلوقتي في {biz}، وهيتوفر خلال (اكتب المدة) إن شاء الله.\nتحب نبلّغك أول ما يوصل؟ أو نقترح لك بديل قريب منه وعليه طلب كبير؟" },
+
+{ id:"woffer", platform:"whatsapp", cat:"عروض وتسويق", title:"إعلان عرض أو خصم", stars:0,
+  scenario:"رسالة تسويقية لعملائك عن عرض محدود المدة.",
+  fusha:"عرض خاص من {biz} 🎁\nخصم (اكتب النسبة) على (اكتب المنتج/الخدمة) حتى (اكتب تاريخ الانتهاء).\nالعرض سارٍ داخل الفرع وعلى الطلبات عبر واتساب. اطلب الآن قبل انتهاء الكمية.",
+  gulf:"عرض خاص من {biz} 🎁\nخصم (اكتب النسبة) على (اكتب المنتج/الخدمة) لين (اكتب تاريخ الانتهاء).\nالعرض يشمل الفرع وطلبات الواتساب. اطلب الحين قبل ما تخلص الكمية.",
+  egypt:"عرض خاص من {biz} 🎁\nخصم (اكتب النسبة) على (اكتب المنتج/الخدمة) لحد (اكتب تاريخ الانتهاء).\nالعرض شغال في الفرع وعلى طلبات الواتساب. اطلب دلوقتي قبل ما الكمية تخلص." },
+
+{ id:"wfollow", platform:"whatsapp", cat:"اعتذار ومتابعة", title:"متابعة رضا العميل بعد الخدمة", stars:0,
+  scenario:"رسالة بعد إتمام الطلب أو الخدمة بيوم.",
+  fusha:"أهلًا بك، معك {biz}.\nأردنا الاطمئنان: هل وصلك طلبك / تمت خدمتك كما توقعت؟ رأيك يهمنا جدًا، وإن واجهت أي ملاحظة فنحن هنا لمعالجتها فورًا.",
+  gulf:"حيّاك الله، معك {biz}.\nحبينا نطّمن عليك: وصلك طلبك تمام؟ أو خدمتنا كانت مثل ما توقعت؟ رأيك يهمنا، وأي ملاحظة عندك إحنا جاهزين نعالجها على طول.",
+  egypt:"أهلًا بيك، معاك {biz}.\nحبينا نطّمن عليك: طلبك وصلك تمام؟ والخدمة كانت زي ما توقعت؟ رأيك يهمنا جدًا، وأي ملاحظة عندك هنعالجها على طول." },
+
+{ id:"wreview", platform:"whatsapp", cat:"عروض وتسويق", title:"طلب تقييم على خرائط جوجل", stars:0,
+  scenario:"بعد تجربة ناجحة، اطلب تقييمًا بلطف مع الرابط.",
+  fusha:"سعداء أن تجربتك مع {biz} كانت طيبة 🌟\nإن كان لديك دقيقة، فتقييمك على خرائط جوجل يساعدنا كثيرًا ويساعد عملاء آخرين على معرفتنا: (الصق رابط التقييم هنا)\nشكرًا لدعمك الدائم.",
+  gulf:"يسعدنا إن تجربتك في {biz} كانت طيّبة 🌟\nإذا عندك دقيقة، تقييمك لنا في خرائط جوجل يفرق معنا كثير ويساعد غيرك يعرفنا: (الصق رابط التقييم هنا)\nمشكور على دعمك.",
+  egypt:"مبسوطين إن تجربتك في {biz} كانت حلوة 🌟\nلو عندك دقيقة، تقييمك لينا على خرائط جوجل هيفرق معانا جدًا وهيساعد ناس تانية تعرفنا: (الصق رابط التقييم هنا)\nشكرًا على دعمك." },
+
+{ id:"wclose", platform:"whatsapp", cat:"اعتذار ومتابعة", title:"إنهاء المحادثة بشكر", stars:0,
+  scenario:"خاتمة مهذبة بعد إتمام خدمة العميل.",
+  fusha:"شكرًا لتعاملك مع {biz} وثقتك بنا.\nإن احتجت أي شيء في أي وقت، فهذه المحادثة مفتوحة لك دائمًا. نتمنى لك يومًا سعيدًا، وإلى لقاء قريب.",
+  gulf:"مشكور على تعاملك مع {biz} وعلى ثقتك.\nأي وقت تحتاج شيء، هالمحادثة مفتوحة لك. الله يسعدك، ونشوفك على خير قريب.",
+  egypt:"شكرًا لتعاملك مع {biz} ولثقتك فينا.\nأي وقت تحتاج أي حاجة، المحادثة دي مفتوحة لك دايمًا. ربنا يسعدك، ونشوفك قريب على خير." }
+];
+
+/* ============ STATE ============ */
+var state = { dialect:"fusha", platform:"all", cat:"all", query:"", favs:{} };
+var DIALECT_NAMES = { fusha:"الفصحى", gulf:"الخليجية", egypt:"المصرية" };
+var CATS_GOOGLE = ["تقييمات إيجابية","تقييمات محايدة","تقييمات سلبية","شكاوى محددة"];
+var CATS_WA = ["ترحيب واستقبال","طلبات وتوصيل","حجوزات ومواعيد","عروض وتسويق","اعتذار ومتابعة"];
+
+var grid = document.getElementById("grid");
+var emptyEl = document.getElementById("empty");
+var resultLine = document.getElementById("result-line");
+var toast = document.getElementById("toast");
+var toastTimer = null;
+
+function getVars(){
+  return {
+    biz: document.getElementById("f-biz").value.trim(),
+    city: document.getElementById("f-city").value.trim(),
+    phone: document.getElementById("f-phone").value.trim(),
+    hours: document.getElementById("f-hours").value.trim()
+  };
+}
+var FALLBACK = { biz:"نشاطنا التجاري", city:"(اكتب المدينة والحي)", phone:"(اكتب رقم التواصل)", hours:"(اكتب ساعات العمل)" };
+
+function fillText(raw, highlight){
+  var v = getVars();
+  var out = raw;
+  ["biz","city","phone","hours"].forEach(function(k){
+    var val = v[k] || FALLBACK[k];
+    var shown = highlight ? '<span class="var">' + escapeHtml(val) + "</span>" : val;
+    out = out.split("{"+k+"}").join(shown);
+  });
+  return out;
+}
+function plainText(raw){ return fillText(raw, false); }
+function escapeHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function starHtml(n){
+  if(!n) return "";
+  var s = "";
+  for(var i=1;i<=5;i++){ s += '<span class="'+(i<=n?"":"off")+'">★</span>'; }
+  return '<div class="stars" aria-label="'+n+' نجوم">'+s+"</div>";
+}
+
+function currentCats(){
+  var cats = [];
+  REPLIES.forEach(function(r){ if(cats.indexOf(r.cat)===-1) cats.push(r.cat); });
+  if(state.platform==="google") cats = cats.filter(function(c){ return CATS_GOOGLE.indexOf(c)>-1; });
+  if(state.platform==="whatsapp") cats = cats.filter(function(c){ return CATS_WA.indexOf(c)>-1; });
+  return cats;
+}
+function renderCatChips(){
+  var box = document.getElementById("cat-chips");
+  var cats = currentCats();
+  if(cats.indexOf(state.cat)===-1) state.cat = "all";
+  var html = '<button type="button" class="chip" data-cat="all" aria-pressed="'+(state.cat==="all")+'">كل المواقف</button>';
+  cats.forEach(function(c){
+    html += '<button type="button" class="chip" data-cat="'+c+'" aria-pressed="'+(state.cat===c)+'">'+c+"</button>";
+  });
+  box.innerHTML = html;
+  box.querySelectorAll("[data-cat]").forEach(function(b){
+    b.addEventListener("click", function(){ state.cat = b.getAttribute("data-cat"); render(); });
+  });
+}
+
+function matches(r){
+  if(state.platform==="fav"){ if(!state.favs[r.id]) return false; }
+  else if(state.platform!=="all" && r.platform!==state.platform) return false;
+  if(state.cat!=="all" && r.cat!==state.cat) return false;
+  if(state.query){
+    var q = state.query;
+    var hay = r.title + " " + r.scenario + " " + r.fusha + " " + r.gulf + " " + r.egypt;
+    if(hay.indexOf(q)===-1) return false;
+  }
+  return true;
+}
+
+function render(){
+  renderCatChips();
+  var list = REPLIES.filter(matches);
+  grid.innerHTML = list.map(function(r){
+    var fav = !!state.favs[r.id];
+    return '<article class="card">'
+      + '<div class="card-head"><h3>'+r.title+'</h3>'
+      + '<span class="badge '+(r.platform==="google"?"google":"whatsapp")+'">'+(r.platform==="google"?"خرائط جوجل":"واتساب")+"</span></div>"
+      + starHtml(r.stars)
+      + '<div class="scenario"><b>الموقف:</b> '+r.scenario+"</div>"
+      + '<div class="reply">'+fillText(r[state.dialect], true)+"</div>"
+      + '<div class="card-foot">'
+      + '<button type="button" class="copy-btn" data-copy="'+r.id+'">'
+      + '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>'
+      + "نسخ الرد</button>"
+      + '<button type="button" class="fav-btn" data-fav="'+r.id+'" aria-pressed="'+fav+'" aria-label="حفظ في المفضلة" title="المفضلة">'+(fav?"★":"☆")+"</button>"
+      + "</div>"
+      + '<span class="dialect-tag">اللهجة المعروضة: '+DIALECT_NAMES[state.dialect]+" · بدّل اللهجة من الأعلى لعرض النسخ الأخرى</span>"
+      + "</article>";
+  }).join("");
+  emptyEl.classList.toggle("show", list.length===0);
+  resultLine.innerHTML = "يُعرض الآن <b>"+list.length+"</b> ردًا باللهجة <b>"+DIALECT_NAMES[state.dialect]+"</b>"
+    + (state.platform==="google" ? " — تقييمات خرائط جوجل" : state.platform==="whatsapp" ? " — واتساب بيزنس" : state.platform==="fav" ? " — المفضلة" : " — كل المنصات");
+
+  grid.querySelectorAll("[data-copy]").forEach(function(b){
+    b.addEventListener("click", function(){ copyReply(b.getAttribute("data-copy"), b); });
+  });
+  grid.querySelectorAll("[data-fav]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var id = b.getAttribute("data-fav");
+      state.favs[id] = !state.favs[id];
+      render();
+    });
+  });
+}
+
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toast.classList.remove("show"); }, 2000);
+}
+
+function copyReply(id, btn){
+  var item = null;
+  REPLIES.forEach(function(r){ if(r.id===id) item = r; });
+  if(!item) return;
+  var text = plainText(item[state.dialect]);
+  function done(){
+    btn.classList.add("copied");
+    var old = btn.innerHTML;
+    btn.innerHTML = "تم النسخ ✓";
+    showToast("تم نسخ الرد باللهجة " + DIALECT_NAMES[state.dialect] + " ✓");
+    setTimeout(function(){ btn.classList.remove("copied"); btn.innerHTML = old; }, 1800);
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){ fallbackCopy(text); done(); });
+  } else { fallbackCopy(text); done(); }
+}
+function fallbackCopy(text){
+  var ta = document.createElement("textarea");
+  ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); } catch(e){}
+  document.body.removeChild(ta);
+}
+
+/* ============ EVENTS ============ */
+document.querySelectorAll("[data-dialect]").forEach(function(b){
+  b.addEventListener("click", function(){
+    state.dialect = b.getAttribute("data-dialect");
+    document.querySelectorAll("[data-dialect]").forEach(function(x){
+      x.setAttribute("aria-pressed", x===b ? "true" : "false");
+    });
+    render();
+  });
+});
+document.querySelectorAll("[data-platform]").forEach(function(b){
+  b.addEventListener("click", function(){
+    state.platform = b.getAttribute("data-platform");
+    state.cat = "all";
+    document.querySelectorAll("[data-platform]").forEach(function(x){
+      x.setAttribute("aria-pressed", x===b ? "true" : "false");
+    });
+    render();
+  });
+});
+document.getElementById("search").addEventListener("input", function(e){
+  state.query = e.target.value.trim();
+  render();
+});
+["f-biz","f-city","f-phone","f-hours"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", render);
+});
+
+render();
+</script>
+</body>
+</html>

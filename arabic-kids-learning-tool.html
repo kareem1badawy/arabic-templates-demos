@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>نتعلّم باللعب — أداة تعليم الأطفال العربية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#FFF8EC;
+    --surface:#FFFFFF;
+    --surface-2:#FFF1D6;
+    --ink:#2E2A26;
+    --ink-soft:#6B6259;
+    --line:#F0DFC2;
+    --teal:#0E7C7B;
+    --teal-dark:#0A5E5D;
+    --teal-soft:#DFF3F2;
+    --orange:#F2762E;
+    --orange-soft:#FFE8D9;
+    --yellow:#FFC531;
+    --yellow-soft:#FFF3C4;
+    --pink:#E85D8A;
+    --pink-soft:#FDE3EC;
+    --green:#3D9B4F;
+    --green-soft:#E2F4E4;
+    --red:#D94F3D;
+    --shadow:0 10px 30px rgba(90,60,10,.10);
+    --radius:20px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1C1A17;
+      --surface:#2A2723;
+      --surface-2:#332E28;
+      --ink:#F5EFE6;
+      --ink-soft:#C9BBA6;
+      --line:#453D33;
+      --teal:#2FB3B1;
+      --teal-dark:#7FD8D6;
+      --teal-soft:#173F3E;
+      --orange:#FF9A5C;
+      --orange-soft:#4A2E1B;
+      --yellow:#FFD34D;
+      --yellow-soft:#4A3D14;
+      --pink:#FF8FB1;
+      --pink-soft:#47222F;
+      --green:#6FCB7E;
+      --green-soft:#1E3A24;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Cairo",system-ui,sans-serif;
+    font-size:17px;line-height:1.7;
+  }
+  h1,h2,h3,.display{font-family:"Baloo Bhaijaan 2","Cairo",sans-serif;line-height:1.3}
+  button{font-family:inherit;cursor:pointer;min-height:44px}
+  a{min-height:32px;display:inline-flex;align-items:center}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:2px solid var(--line);
+  }
+  .topbar-in{display:flex;align-items:center;gap:10px;padding:10px 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:10px;font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:1.25rem}
+  .brand .mark{
+    width:42px;height:42px;border-radius:13px;background:var(--teal);color:#fff;
+    display:grid;place-items:center;font-size:1.5rem;transform:rotate(-4deg);
+  }
+  .nav{display:flex;gap:6px;flex-wrap:wrap;margin-inline-start:auto}
+  .nav a{
+    text-decoration:none;color:var(--ink);font-weight:700;font-size:.95rem;
+    padding:6px 13px;border-radius:999px;border:2px solid transparent;
+  }
+  .nav a:hover{border-color:var(--line);background:var(--surface)}
+  .stars-pill{
+    display:flex;align-items:center;gap:6px;background:var(--yellow-soft);
+    border:2px solid var(--yellow);border-radius:999px;padding:4px 14px;
+    font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:1.05rem;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding:38px 0 10px;text-align:center;position:relative;overflow:hidden}
+  .hero h1{font-size:clamp(2.1rem,6vw,3.4rem);margin:0 0 8px;font-weight:800}
+  .hero h1 .hl{color:var(--teal)}
+  .hero h1 .hl2{color:var(--orange)}
+  .hero p{color:var(--ink-soft);max-width:560px;margin:0 auto 20px;font-size:1.08rem}
+  .hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{
+    border:none;border-radius:999px;padding:12px 26px;font-size:1.05rem;font-weight:800;
+    font-family:"Baloo Bhaijaan 2";text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+    transition:transform .15s ease;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-teal{background:var(--teal);color:#fff;box-shadow:0 6px 0 var(--teal-dark)}
+  .btn-orange{background:var(--orange);color:#fff;box-shadow:0 6px 0 #C85A1F}
+  .btn-ghost{background:var(--surface);color:var(--ink);border:2px solid var(--line);box-shadow:none}
+  .float-letter{
+    position:absolute;font-family:"Baloo Bhaijaan 2";font-weight:800;opacity:.16;
+    user-select:none;pointer-events:none;line-height:1;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .float-letter{animation:bob 5s ease-in-out infinite}
+    @keyframes bob{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-12px) rotate(4deg)}}
+  }
+
+  /* ---------- sections ---------- */
+  section{padding:34px 0 8px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .sec-head h2{font-size:clamp(1.5rem,4vw,2rem);margin:0;font-weight:800}
+  .sec-head .tag{
+    font-size:.85rem;font-weight:700;padding:2px 12px;border-radius:999px;
+  }
+  .sec-sub{color:var(--ink-soft);margin:0 0 18px;max-width:640px}
+  .tag-teal{background:var(--teal-soft);color:var(--teal-dark)}
+  .tag-orange{background:var(--orange-soft);color:var(--orange)}
+  .tag-pink{background:var(--pink-soft);color:var(--pink)}
+  .tag-yellow{background:var(--yellow-soft);color:#8a6d00}
+  @media (prefers-color-scheme: dark){.tag-yellow{color:var(--yellow)}}
+
+  /* ---------- flashcards ---------- */
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:14px}
+  .fcard{
+    perspective:700px;background:none;border:none;padding:0;text-align:center;min-height:0;
+    display:block;width:100%;
+  }
+  .fcard-in{
+    display:block;position:relative;height:168px;transform-style:preserve-3d;
+    transition:transform .5s cubic-bezier(.4,1.4,.6,1);
+  }
+  .fcard.flipped .fcard-in{transform:rotateY(180deg)}
+  .face{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    border:3px solid var(--line);background:var(--surface);box-shadow:var(--shadow);padding:8px;
+  }
+  .face.back{transform:rotateY(180deg);background:var(--surface-2)}
+  .face .big{font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:3.4rem;line-height:1.1}
+  .face .lname{font-weight:700;color:var(--ink-soft);font-size:.95rem}
+  .face .word{font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:1.45rem}
+  .face .emoji{font-size:2.6rem;line-height:1.2}
+  .face .forms{font-size:.85rem;color:var(--ink-soft);font-weight:700;letter-spacing:1px}
+  .c-teal{color:var(--teal)} .c-orange{color:var(--orange)} .c-pink{color:var(--pink)} .c-yellow{color:#D9A400}
+  @media (prefers-color-scheme: dark){.c-yellow{color:var(--yellow)}}
+  .hint{font-size:.85rem;color:var(--ink-soft);text-align:center;margin-top:12px}
+
+  .num-dots{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:90px}
+  .num-dots i{width:13px;height:13px;border-radius:50%;background:var(--orange);display:block}
+
+  /* ---------- quiz ---------- */
+  .quiz-box{
+    background:var(--surface);border:3px solid var(--line);border-radius:26px;
+    box-shadow:var(--shadow);padding:24px;max-width:680px;margin:0 auto;
+  }
+  .quiz-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .q-progress{font-weight:800;font-family:"Baloo Bhaijaan 2";color:var(--ink-soft)}
+  .q-score{background:var(--green-soft);color:var(--green);font-weight:800;border-radius:999px;padding:3px 14px;font-family:"Baloo Bhaijaan 2"}
+  .bar{height:12px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-bottom:18px}
+  .bar i{display:block;height:100%;background:var(--teal);border-radius:99px;transition:width .4s ease;width:0}
+  .q-prompt{text-align:center;font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:1.35rem;margin:4px 0 4px}
+  .q-display{text-align:center;padding:10px 0 16px}
+  .q-display .huge{font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:5rem;line-height:1.1;color:var(--teal)}
+  .q-display .objs{font-size:2.2rem;line-height:1.5;letter-spacing:4px;max-width:420px;margin:0 auto}
+  .q-display .qword{font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:2.4rem;color:var(--orange)}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:480px){.opts{grid-template-columns:1fr 1fr}}
+  .opt{
+    background:var(--surface-2);border:3px solid var(--line);border-radius:18px;
+    font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:1.7rem;padding:12px 8px;color:var(--ink);
+    transition:transform .12s ease, background .2s;
+  }
+  .opt:hover{transform:translateY(-2px)}
+  .opt.correct{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .opt.wrong{background:var(--pink-soft);border-color:var(--red);color:var(--red)}
+  .opt:disabled{cursor:default;opacity:.92}
+  .q-feedback{text-align:center;font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:1.3rem;min-height:2.2em;padding-top:12px}
+  .q-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+  .sound-btn{
+    background:var(--yellow-soft);border:2px solid var(--yellow);color:var(--ink);
+    border-radius:999px;padding:8px 20px;font-weight:800;font-family:"Baloo Bhaijaan 2";font-size:1rem;
+    display:inline-flex;gap:8px;align-items:center;
+  }
+  .quiz-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+  .quiz-tab{
+    border:3px solid var(--line);background:var(--surface);color:var(--ink);
+    border-radius:999px;padding:8px 22px;font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:1.05rem;
+  }
+  .quiz-tab.active{background:var(--teal);border-color:var(--teal);color:#fff}
+  .done-box{text-align:center;padding:16px 0}
+  .done-box .big-star{font-size:4rem;line-height:1}
+  .done-box h3{font-size:1.6rem;margin:8px 0 4px}
+  .confetti{position:absolute;font-size:1.4rem;pointer-events:none;animation:fall 1.2s ease-out forwards}
+  @keyframes fall{to{transform:translateY(120px) rotate(200deg);opacity:0}}
+
+  /* ---------- worksheets ---------- */
+  .sheets-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .sheet-card{background:var(--surface);border:3px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .sheet-card h3{margin:0 0 4px;font-size:1.25rem}
+  .sheet-card p{color:var(--ink-soft);margin:0 0 12px;font-size:.95rem}
+  .trace-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .trace-cell{
+    width:56px;height:56px;border:2.5px dashed var(--line);border-radius:12px;
+    display:grid;place-items:center;font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:1.9rem;
+    color:color-mix(in srgb, var(--ink) 28%, transparent);
+  }
+  .trace-cell.solid{color:var(--ink);border-style:solid}
+  .count-row{display:flex;align-items:center;gap:12px;margin:8px 0;font-size:1.5rem}
+  .count-box{width:46px;height:46px;border:2.5px solid var(--ink-soft);border-radius:10px;margin-inline-start:auto}
+  .match-row{display:flex;justify-content:space-between;align-items:center;margin:8px 0;font-size:1.4rem}
+  .match-row .ml{font-family:"Baloo Bhaijaan 2";font-weight:800;font-size:1.8rem}
+
+  /* ---------- parents ---------- */
+  .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .feat{background:var(--surface);border:3px solid var(--line);border-radius:var(--radius);padding:18px}
+  .feat h3{margin:0 0 4px;font-size:1.15rem}
+  .feat p{margin:0;color:var(--ink-soft);font-size:.95rem}
+  .feat .fic{font-size:1.8rem;margin-bottom:6px}
+
+  footer{margin-top:44px;border-top:2px solid var(--line);padding:22px 0 34px;text-align:center;color:var(--ink-soft);font-size:.92rem}
+  .print-area{display:none}
+
+  /* ---------- print ---------- */
+  @media print{
+    body{background:#fff;color:#000;font-size:14px}
+    .topbar,.hero,.no-print,footer,.quiz-section,.cards-section{display:none !important}
+    .print-area{display:block !important}
+    .print-sheet{page-break-after:always;padding:10px 0}
+    .print-sheet h2{font-size:1.5rem;margin:0 0 4px}
+    .print-sheet .p-sub{color:#555;margin:0 0 14px}
+    .trace-cell{border-color:#999;color:#bbb}
+    .trace-cell.solid{color:#000}
+    .count-box{border-color:#000}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <div class="brand"><span class="mark">أ</span> نتعلّم باللعب</div>
+    <nav class="nav">
+      <a href="#letters">الحروف</a>
+      <a href="#numbers">الأرقام</a>
+      <a href="#quiz">الاختبارات</a>
+      <a href="#worksheets">أوراق العمل</a>
+    </nav>
+    <div class="stars-pill" title="نجومي">⭐ <span id="totalStars">0</span></div>
+  </div>
+</header>
+
+<div class="hero wrap">
+  <span class="float-letter" style="top:6px;inset-inline-start:4%;font-size:4.5rem;color:var(--teal)">ب</span>
+  <span class="float-letter" style="top:52px;inset-inline-end:5%;font-size:3.6rem;color:var(--orange);animation-delay:1.2s">٣</span>
+  <span class="float-letter" style="bottom:2px;inset-inline-start:12%;font-size:3rem;color:var(--pink);animation-delay:.6s">ش</span>
+  <span class="float-letter" style="bottom:14px;inset-inline-end:13%;font-size:3.2rem;color:var(--yellow);animation-delay:1.8s">٧</span>
+  <h1>الحروف والأرقام <span class="hl">باللعب</span> <span class="hl2">والمرح</span></h1>
+  <p>بطاقات تعليمية لكل حروف العربية والأرقام من ١ إلى ١٠، واختبارات تفاعلية بالنطق والصوت، وأوراق عمل جاهزة للطباعة — كلها في صفحة واحدة تعمل من غير إنترنت بعد فتحها.</p>
+  <div class="hero-ctas">
+    <a class="btn btn-teal" href="#quiz">▶ ابدأ الاختبار</a>
+    <a class="btn btn-orange" href="#letters">تصفّح البطاقات</a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- ===== Letters flashcards ===== -->
+  <section id="letters" class="cards-section">
+    <div class="sec-head"><h2>بطاقات الحروف</h2><span class="tag tag-teal">٢٨ حرفًا</span></div>
+    <p class="sec-sub">اضغط أي بطاقة لقلبها ورؤية الكلمة والمثال، واضغط زر الصوت لسماع نطق الحرف والكلمة.</p>
+    <div class="cards-grid" id="lettersGrid"></div>
+    <p class="hint">كل بطاقة تعرض الحرف بأشكاله: في أول الكلمة ووسطها وآخرها.</p>
+  </section>
+
+  <!-- ===== Numbers flashcards ===== -->
+  <section id="numbers" class="cards-section">
+    <div class="sec-head"><h2>بطاقات الأرقام</h2><span class="tag tag-orange">من ١ إلى ١٠</span></div>
+    <p class="sec-sub">اضغط البطاقة لقلبها وعدّ النقاط بنفسك، واستمع لنطق الرقم وكلمته.</p>
+    <div class="cards-grid" id="numbersGrid"></div>
+  </section>
+
+  <!-- ===== Quiz ===== -->
+  <section id="quiz" class="quiz-section">
+    <div class="sec-head"><h2>الاختبارات التفاعلية</h2><span class="tag tag-pink">١٠ أسئلة في كل جولة</span></div>
+    <p class="sec-sub">اختر نوع الاختبار وابدأ. كل إجابة صحيحة تكسبك نجمة، وفي نهاية الجولة تحصل على نتيجتك كاملة.</p>
+
+    <div class="quiz-tabs no-print" role="tablist">
+      <button class="quiz-tab active" data-mode="letters" type="button">اختبار الحروف</button>
+      <button class="quiz-tab" data-mode="numbers" type="button">اختبار الأرقام</button>
+      <button class="quiz-tab" data-mode="words" type="button">اختبار الكلمات</button>
+    </div>
+
+    <div class="quiz-box" id="quizBox" style="position:relative">
+      <div class="quiz-top">
+        <span class="q-progress" id="qProgress">السؤال ١ من ١٠</span>
+        <span class="q-score">⭐ <span id="qScore">0</span></span>
+      </div>
+      <div class="bar"><i id="qBar"></i></div>
+      <div id="quizMain">
+        <p class="q-prompt" id="qPrompt"></p>
+        <div class="q-display" id="qDisplay"></div>
+        <div style="text-align:center;margin-bottom:14px">
+          <button class="sound-btn" id="qSound" type="button">🔊 اسمع السؤال</button>
+        </div>
+        <div class="opts" id="qOpts"></div>
+        <p class="q-feedback" id="qFeedback"></p>
+        <div class="q-actions">
+          <button class="btn btn-teal" id="qNext" type="button" style="display:none">السؤال التالي ←</button>
+        </div>
+      </div>
+      <div class="done-box" id="quizDone" style="display:none">
+        <div class="big-star">🏆</div>
+        <h3 id="doneTitle">أحسنت!</h3>
+        <p id="doneText"></p>
+        <button class="btn btn-orange" id="qRestart" type="button">العب مرة أخرى</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Worksheets ===== -->
+  <section id="worksheets">
+    <div class="sec-head"><h2>أوراق عمل للطباعة</h2><span class="tag tag-yellow">٣ أوراق جاهزة</span></div>
+    <p class="sec-sub">ثلاث أوراق عمل: تتبّع الحروف وكتابتها، العدّ وكتابة الرقم، وتوصيل الحرف بالكلمة. للطباعة استخدم قائمة المتصفح (طباعة / حفظ PDF) وستظهر الأوراق وحدها.</p>
+
+    <div class="sheets-grid no-print">
+      <div class="sheet-card">
+        <h3>✏️ ورقة ١ — تتبّع الحروف</h3>
+        <p>يتتبّع الطفل الحرف المنقّط ثم يكتبه بنفسه في الخانة الفارغة.</p>
+        <div class="trace-row">
+          <span class="trace-cell solid">ب</span><span class="trace-cell">ب</span><span class="trace-cell">ب</span><span class="trace-cell"></span><span class="trace-cell"></span>
+        </div>
+        <div class="trace-row">
+          <span class="trace-cell solid">ت</span><span class="trace-cell">ت</span><span class="trace-cell">ت</span><span class="trace-cell"></span><span class="trace-cell"></span>
+        </div>
+      </div>
+      <div class="sheet-card">
+        <h3>🔢 ورقة ٢ — عدّ واكتب الرقم</h3>
+        <p>يعدّ الطفل الأشكال في كل صف ويكتب الرقم الصحيح في المربع.</p>
+        <div class="count-row"><span>🍎🍎🍎</span><span class="count-box"></span></div>
+        <div class="count-row"><span>⭐⭐⭐⭐⭐</span><span class="count-box"></span></div>
+        <div class="count-row"><span>🐟🐟</span><span class="count-box"></span></div>
+      </div>
+      <div class="sheet-card">
+        <h3>🔗 ورقة ٣ — وصّل الحرف بالكلمة</h3>
+        <p>يرسم الطفل خطًا بين كل حرف والكلمة التي تبدأ به.</p>
+        <div class="match-row"><span class="ml c-teal">س</span><span>🍎 تفاح</span></div>
+        <div class="match-row"><span class="ml c-orange">ت</span><span>🐟 سمكة</span></div>
+        <div class="match-row"><span class="ml c-pink">ق</span><span>🌙 قمر</span></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px" class="no-print">
+      <p class="hint" style="font-size:1rem">للطباعة: افتح قائمة المتصفح واختر «طباعة» أو «حفظ كـ PDF» — ستظهر أوراق العمل الثلاث فقط، ورقة في كل صفحة، من غير بقية محتوى الصفحة.</p>
+    </div>
+
+    <!-- Printable full sheets -->
+    <div class="print-area" id="printArea">
+      <div class="print-sheet">
+        <h2>ورقة عمل ١ — تتبّع الحروف وكتابتها</h2>
+        <p class="p-sub">الاسم: ............................ &nbsp;|&nbsp; التاريخ: ....................</p>
+        <div id="printTrace"></div>
+      </div>
+      <div class="print-sheet">
+        <h2>ورقة عمل ٢ — عدّ واكتب الرقم</h2>
+        <p class="p-sub">الاسم: ............................ &nbsp;|&nbsp; التاريخ: ....................</p>
+        <div id="printCount"></div>
+      </div>
+      <div class="print-sheet">
+        <h2>ورقة عمل ٣ — وصّل الحرف بالكلمة التي تبدأ به</h2>
+        <p class="p-sub">الاسم: ............................ &nbsp;|&nbsp; التاريخ: ....................</p>
+        <div id="printMatch"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== For parents ===== -->
+  <section>
+    <div class="sec-head"><h2>للمعلّم وولي الأمر</h2></div>
+    <p class="sec-sub">ما الذي تحتويه الأداة وكيف تُستخدم في البيت أو الفصل.</p>
+    <div class="feat-grid">
+      <div class="feat"><div class="fic">🃏</div><h3>٣٨ بطاقة تعليمية</h3><p>٢٨ بطاقة للحروف بأشكالها وكلمة وصورة لكل حرف، و١٠ بطاقات للأرقام بالنقاط والكلمات — اضغط أي بطاقة لقلبها وسماع النطق.</p></div>
+      <div class="feat"><div class="fic">🔊</div><h3>نطق صوتي مدمج</h3><p>زر صوت في كل بطاقة وسؤال ينطق الحرف والكلمة والرقم بصوت المتصفح بالعربية، من غير أي ملفات صوت خارجية.</p></div>
+      <div class="feat"><div class="fic">🎯</div><h3>٣ اختبارات تفاعلية</h3><p>اختبار الحروف، واختبار الأرقام بالعدّ، واختبار الكلمات التي تبدأ بالحرف — ١٠ أسئلة عشوائية في كل جولة مع النجوم والتشجيع.</p></div>
+      <div class="feat"><div class="fic">🖨️</div><h3>أوراق عمل قابلة للطباعة</h3><p>ثلاث أوراق بأنشطة التتبّع والعدّ والتوصيل، بتنسيق طباعة نظيف يخفي بقية الصفحة تلقائيًا.</p></div>
+      <div class="feat"><div class="fic">📱</div><h3>تعمل على أي جهاز</h3><p>صفحة واحدة متجاوبة تعمل على الجوال والتابلت والكمبيوتر، من غير حسابات ومن غير خادم ومن غير جمع أي بيانات.</p></div>
+      <div class="feat"><div class="fic">🎨</div><h3>سهلة التخصيص</h3><p>الكلمات والألوان والأسئلة كلها في مكان واحد أعلى ملف JavaScript، فيسهل تعديلها أو ترجمتها أو إضافة حروف وأرقام جديدة.</p></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">نتعلّم باللعب — أداة تعليمية عربية للأطفال: حروف، أرقام، اختبارات، وأوراق عمل للطباعة.</div>
+</footer>
+
+<script>
+/* ================= DATA — عدّل من هنا ================= */
+var LETTERS = [
+  {ch:"ا", name:"ألف",  word:"أسد",     emoji:"🦁", forms:"ـا"},
+  {ch:"ب", name:"باء",  word:"بطة",     emoji:"🦆", forms:"بـ ـبـ ـب"},
+  {ch:"ت", name:"تاء",  word:"تفاح",    emoji:"🍎", forms:"تـ ـتـ ـت"},
+  {ch:"ث", name:"ثاء",  word:"ثعلب",    emoji:"🦊", forms:"ثـ ـثـ ـث"},
+  {ch:"ج", name:"جيم",  word:"جمل",     emoji:"🐪", forms:"جـ ـجـ ـج"},
+  {ch:"ح", name:"حاء",  word:"حصان",    emoji:"🐴", forms:"حـ ـحـ ـح"},
+  {ch:"خ", name:"خاء",  word:"خبز",     emoji:"🍞", forms:"خـ ـخـ ـخ"},
+  {ch:"د", name:"دال",  word:"دجاجة",   emoji:"🐔", forms:"ـد"},
+  {ch:"ذ", name:"ذال",  word:"ذرة",     emoji:"🌽", forms:"ـذ"},
+  {ch:"ر", name:"راء",  word:"رمان",    emoji:"🍈", forms:"ـر"},
+  {ch:"ز", name:"زاي",  word:"زرافة",   emoji:"🦒", forms:"ـز"},
+  {ch:"س", name:"سين",  word:"سمكة",    emoji:"🐟", forms:"سـ ـسـ ـس"},
+  {ch:"ش", name:"شين",  word:"شمس",     emoji:"☀️", forms:"شـ ـشـ ـش"},
+  {ch:"ص", name:"صاد",  word:"صقر",     emoji:"🦅", forms:"صـ ـصـ ـص"},
+  {ch:"ض", name:"ضاد",  word:"ضفدع",    emoji:"🐸", forms:"ضـ ـضـ ـض"},
+  {ch:"ط", name:"طاء",  word:"طائرة",   emoji:"✈️", forms:"طـ ـطـ ـط"},
+  {ch:"ظ", name:"ظاء",  word:"ظرف",     emoji:"✉️", forms:"ظـ ـظـ ـظ"},
+  {ch:"ع", name:"عين",  word:"عنب",     emoji:"🍇", forms:"عـ ـعـ ـع"},
+  {ch:"غ", name:"غين",  word:"غيمة",    emoji:"☁️", forms:"غـ ـغـ ـغ"},
+  {ch:"ف", name:"فاء",  word:"فراشة",   emoji:"🦋", forms:"فـ ـفـ ـف"},
+  {ch:"ق", name:"قاف",  word:"قمر",     emoji:"🌙", forms:"قـ ـقـ ـق"},
+  {ch:"ك", name:"كاف",  word:"كتاب",    emoji:"📖", forms:"كـ ـكـ ـك"},
+  {ch:"ل", name:"لام",  word:"ليمون",   emoji:"🍋", forms:"لـ ـلـ ـل"},
+  {ch:"م", name:"ميم",  word:"موز",     emoji:"🍌", forms:"مـ ـمـ ـم"},
+  {ch:"ن", name:"نون",  word:"نجمة",    emoji:"⭐", forms:"نـ ـنـ ـن"},
+  {ch:"هـ", name:"هاء", word:"هلال",    emoji:"🌙", forms:"هـ ـهـ ـه"},
+  {ch:"و", name:"واو",  word:"وردة",    emoji:"🌹", forms:"ـو"},
+  {ch:"ي", name:"ياء",  word:"يد",      emoji:"✋", forms:"يـ ـيـ ـي"}
+];
+var NUMBERS = [
+  {n:1, ar:"١", word:"واحد"}, {n:2, ar:"٢", word:"اثنان"}, {n:3, ar:"٣", word:"ثلاثة"},
+  {n:4, ar:"٤", word:"أربعة"}, {n:5, ar:"٥", word:"خمسة"}, {n:6, ar:"٦", word:"ستة"},
+  {n:7, ar:"٧", word:"سبعة"}, {n:8, ar:"٨", word:"ثمانية"}, {n:9, ar:"٩", word:"تسعة"},
+  {n:10, ar:"١٠", word:"عشرة"}
+];
+var COUNT_SETS = [
+  {emoji:"🍎", label:"تفاحة"}, {emoji:"⭐", label:"نجمة"}, {emoji:"🐟", label:"سمكة"},
+  {emoji:"🌹", label:"وردة"}, {emoji:"🍌", label:"موزة"}, {emoji:"🦋", label:"فراشة"}
+];
+var COLORS = ["c-teal","c-orange","c-pink","c-yellow"];
+var AR_DIGITS = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
+function toAr(num){ return String(num).split("").map(function(d){return AR_DIGITS[+d];}).join(""); }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t;} return a; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+/* ================= SPEECH ================= */
+function speak(text){
+  try{
+    if(!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = "ar-SA"; u.rate = 0.85;
+    var voices = window.speechSynthesis.getVoices();
+    for(var i=0;i<voices.length;i++){ if(voices[i].lang && voices[i].lang.indexOf("ar")===0){ u.voice = voices[i]; break; } }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+if("speechSynthesis" in window){ window.speechSynthesis.getVoices(); }
+
+/* ================= FLASHCARDS ================= */
+var totalStars = 0;
+function addStars(n){
+  totalStars += n;
+  document.getElementById("totalStars").textContent = toAr(totalStars);
+}
+function buildCards(){
+  var lg = document.getElementById("lettersGrid");
+  LETTERS.forEach(function(L, i){
+    var color = COLORS[i % COLORS.length];
+    var btn = document.createElement("button");
+    btn.type = "button"; btn.className = "fcard"; btn.setAttribute("aria-label","بطاقة حرف " + L.name);
+    btn.innerHTML =
+      '<span class="fcard-in">' +
+        '<span class="face front"><span class="big ' + color + '">' + L.ch + '</span><span class="lname">حرف الـ' + L.name + '</span></span>' +
+        '<span class="face back"><span class="emoji">' + L.emoji + '</span><span class="word">' + L.word + '</span><span class="forms">' + L.forms + '</span></span>' +
+      '</span>';
+    btn.addEventListener("click", function(){
+      btn.classList.toggle("flipped");
+      speak("حرف " + L.name + "، " + L.word);
+    });
+    lg.appendChild(btn);
+  });
+  var ng = document.getElementById("numbersGrid");
+  NUMBERS.forEach(function(N, i){
+    var color = COLORS[(i+1) % COLORS.length];
+    var dots = "";
+    for(var d=0; d<N.n; d++) dots += "<i></i>";
+    var btn = document.createElement("button");
+    btn.type = "button"; btn.className = "fcard"; btn.setAttribute("aria-label","بطاقة رقم " + N.word);
+    btn.innerHTML =
+      '<span class="fcard-in">' +
+        '<span class="face front"><span class="big ' + color + '">' + N.ar + '</span><span class="lname">' + N.word + '</span></span>' +
+        '<span class="face back"><span class="num-dots">' + dots + '</span><span class="word">' + N.word + '</span><span class="lname">عدّ النقاط: ' + N.ar + '</span></span>' +
+      '</span>';
+    btn.addEventListener("click", function(){
+      btn.classList.toggle("flipped");
+      speak("رقم " + N.word);
+    });
+    ng.appendChild(btn);
+  });
+}
+
+/* ================= QUIZ ================= */
+var quiz = { mode:"letters", list:[], idx:0, score:0, locked:false, currentText:"" };
+
+function makeQuestions(mode){
+  var qs = [], i, item, opts;
+  if(mode === "letters"){
+    var pool = shuffle(LETTERS).slice(0,10);
+    pool.forEach(function(L){
+      var style = Math.random() < 0.5 ? "name" : "find";
+      if(style === "name"){
+        opts = shuffle(LETTERS.filter(function(x){return x!==L;})).slice(0,3).map(function(x){return x.name;});
+        qs.push({ prompt:"ما اسم هذا الحرف؟", display:'<span class="huge">' + L.ch + '</span>',
+          speakText:"ما اسم هذا الحرف؟", options: shuffle(opts.concat([L.name])), answer: L.name, optClass:"" });
+      } else {
+        opts = shuffle(LETTERS.filter(function(x){return x!==L;})).slice(0,3).map(function(x){return x.ch;});
+        qs.push({ prompt:"أين حرف الـ" + L.name + "؟", display:'<span class="qword">' + L.emoji + " " + L.word + '</span>',
+          speakText:"أين حرف " + L.name + "؟ " + L.word, options: shuffle(opts.concat([L.ch])), answer: L.ch, optClass:"" });
+      }
+    });
+  } else if(mode === "numbers"){
+    for(i=0;i<10;i++){
+      var set = pick(COUNT_SETS);
+      var count = 1 + Math.floor(Math.random()*10);
+      var target = NUMBERS[count-1];
+      var others = shuffle(NUMBERS.filter(function(x){return x!==target;})).slice(0,3).map(function(x){return x.ar;});
+      var objs = "";
+      for(var k=0;k<count;k++) objs += set.emoji;
+      qs.push({ prompt:"كم عدد الـ" + set.label + "؟ عدّ معي!", display:'<div class="objs">' + objs + '</div>',
+        speakText:"كم عدد " + set.label + "؟", options: shuffle(others.concat([target.ar])), answer: target.ar, optClass:"" });
+    }
+  } else {
+    var pool2 = shuffle(LETTERS).slice(0,10);
+    pool2.forEach(function(L){
+      var wrongWords = shuffle(LETTERS.filter(function(x){return x!==L;})).slice(0,3).map(function(x){return x.word;});
+      qs.push({ prompt:"ما الكلمة التي تبدأ بحرف الـ" + L.name + " (" + L.ch + ")؟",
+        display:'<span class="huge">' + L.ch + '</span>',
+        speakText:"ما الكلمة التي تبدأ بحرف " + L.name + "؟",
+        options: shuffle(wrongWords.concat([L.word])), answer: L.word, optClass:"word-opt" });
+    });
+  }
+  return qs;
+}
+
+function startQuiz(){
+  quiz.list = makeQuestions(quiz.mode);
+  quiz.idx = 0; quiz.score = 0;
+  document.getElementById("quizDone").style.display = "none";
+  document.getElementById("quizMain").style.display = "";
+  document.getElementById("qScore").textContent = "٠";
+  renderQuestion();
+}
+function renderQuestion(){
+  quiz.locked = false;
+  var q = quiz.list[quiz.idx];
+  quiz.currentText = q.speakText;
+  document.getElementById("qProgress").textContent = "السؤال " + toAr(quiz.idx+1) + " من " + toAr(quiz.list.length);
+  document.getElementById("qBar").style.width = ((quiz.idx)/quiz.list.length*100) + "%";
+  document.getElementById("qPrompt").textContent = q.prompt;
+  document.getElementById("qDisplay").innerHTML = q.display;
+  document.getElementById("qFeedback").textContent = "";
+  document.getElementById("qNext").style.display = "none";
+  var box = document.getElementById("qOpts");
+  box.innerHTML = "";
+  q.options.forEach(function(opt){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "opt"; b.textContent = opt;
+    if(q.optClass === "word-opt") b.style.fontSize = "1.25rem";
+    b.addEventListener("click", function(){ answer(b, opt, q); });
+    box.appendChild(b);
+  });
+}
+function burst(){
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var box = document.getElementById("quizBox");
+  var icons = ["⭐","🎉","🌟","✨"];
+  for(var i=0;i<10;i++){
+    var s = document.createElement("span");
+    s.className = "confetti"; s.textContent = pick(icons);
+    s.style.top = (20 + Math.random()*30) + "%";
+    s.style.insetInlineStart = (10 + Math.random()*80) + "%";
+    box.appendChild(s);
+    (function(el){ setTimeout(function(){ el.remove(); }, 1300); })(s);
+  }
+}
+function answer(btn, opt, q){
+  if(quiz.locked) return;
+  quiz.locked = true;
+  var opts = document.querySelectorAll("#qOpts .opt");
+  opts.forEach(function(o){ o.disabled = true; if(o.textContent === q.answer) o.classList.add("correct"); });
+  var fb = document.getElementById("qFeedback");
+  if(opt === q.answer){
+    quiz.score++; addStars(1);
+    document.getElementById("qScore").textContent = toAr(quiz.score);
+    fb.textContent = pick(["أحسنت! إجابة صحيحة ⭐","رائع! أنت نجم ⭐","برافو! إجابة صحيحة ⭐"]);
+    fb.style.color = "var(--green)";
+    speak("أحسنت! إجابة صحيحة");
+    burst();
+  } else {
+    btn.classList.add("wrong");
+    fb.textContent = "ليست هذه. الإجابة الصحيحة: " + q.answer;
+    fb.style.color = "var(--red)";
+    speak("الإجابة الصحيحة هي " + q.answer);
+  }
+  document.getElementById("qBar").style.width = ((quiz.idx+1)/quiz.list.length*100) + "%";
+  var next = document.getElementById("qNext");
+  next.textContent = (quiz.idx === quiz.list.length-1) ? "عرض النتيجة 🏆" : "السؤال التالي ←";
+  next.style.display = "";
+}
+function nextQuestion(){
+  quiz.idx++;
+  if(quiz.idx >= quiz.list.length){
+    document.getElementById("quizMain").style.display = "none";
+    var done = document.getElementById("quizDone");
+    done.style.display = "";
+    var title, text;
+    if(quiz.score === 10){ title = "مذهل! علامة كاملة 🏆"; }
+    else if(quiz.score >= 7){ title = "أحسنت يا بطل!"; }
+    else if(quiz.score >= 4){ title = "محاولة طيبة!"; }
+    else { title = "لا بأس، التدرّب يصنع الأبطال!"; }
+    text = "أجبت عن " + toAr(quiz.score) + " من " + toAr(quiz.list.length) + " أسئلة إجابة صحيحة، وكسبت " + toAr(quiz.score) + " نجوم في هذه الجولة.";
+    document.getElementById("doneTitle").textContent = title;
+    document.getElementById("doneText").textContent = text;
+    speak(title + " " + text);
+    burst();
+  } else {
+    renderQuestion();
+  }
+}
+
+/* ================= WORKSHEETS (print) ================= */
+function buildPrintSheets(){
+  var traceLetters = ["ب","ت","ث","ج","س","ش","م","ن"];
+  var th = "";
+  traceLetters.forEach(function(ch){
+    th += '<div class="trace-row"><span class="trace-cell solid">' + ch + '</span>' +
+      '<span class="trace-cell">' + ch + '</span><span class="trace-cell">' + ch + '</span>' +
+      '<span class="trace-cell">' + ch + '</span><span class="trace-cell"></span><span class="trace-cell"></span><span class="trace-cell"></span></div>';
+  });
+  document.getElementById("printTrace").innerHTML = th;
+
+  var counts = [ {e:"🍎",n:3},{e:"⭐",n:5},{e:"🐟",n:2},{e:"🌹",n:6},{e:"🍌",n:4},{e:"🦋",n:7} ];
+  var ch2 = "";
+  counts.forEach(function(c){
+    var s = ""; for(var i=0;i<c.n;i++) s += c.e;
+    ch2 += '<div class="count-row"><span>' + s + '</span><span class="count-box"></span></div>';
+  });
+  document.getElementById("printCount").innerHTML = ch2;
+
+  var pairs = shuffle(LETTERS.slice(0,12)).slice(0,6);
+  var left = pairs.map(function(L){ return '<div class="match-row"><span class="ml">' + L.ch + '</span><span>•</span></div>'; }).join("");
+  var right = shuffle(pairs).map(function(L){ return '<div class="match-row"><span>•</span><span>' + L.emoji + " " + L.word + '</span></div>'; }).join("");
+  document.getElementById("printMatch").innerHTML =
+    '<div style="display:flex;justify-content:space-between;gap:40px"><div style="flex:1">' + left + '</div><div style="flex:1">' + right + '</div></div>';
+}
+
+/* ================= INIT ================= */
+document.querySelectorAll(".quiz-tab").forEach(function(tab){
+  tab.addEventListener("click", function(){
+    document.querySelectorAll(".quiz-tab").forEach(function(t){ t.classList.remove("active"); });
+    tab.classList.add("active");
+    quiz.mode = tab.getAttribute("data-mode");
+    startQuiz();
+  });
+});
+document.getElementById("qNext").addEventListener("click", nextQuestion);
+document.getElementById("qRestart").addEventListener("click", startQuiz);
+document.getElementById("qSound").addEventListener("click", function(){ speak(quiz.currentText); });
+buildCards();
+buildPrintSheets();
+startQuiz();
+</script>
+</body>
+</html>
